@@ -15,13 +15,10 @@ exports.forgetPassword = async (req, res, next) => {
     sgMail.setApiKey(process.env.API_KEY);
     const email = req.body.emailAdd;
     const user = await User.findOne({ email: req.body.emailAdd } );
-    console.log("EMAIL OF USER >>>>>>>>" , user)
     
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    console.log("USer ID is >>>>>>",user._id)
-    // const id = user._id.toString();
     
     const newForgotPassword = new ForgetPassword({
       active: true,
@@ -29,11 +26,8 @@ exports.forgetPassword = async (req, res, next) => {
       userId:user._id
     });
 
-    const id =  newForgotPassword._id.toString();
-    console.log("newForgotPassword is >>>>>>>>" ,id)
-  
+    const id =  newForgotPassword._id.toString();  
     await newForgotPassword.save()
-    console.log( " new Pass word is >>>>" , newForgotPassword)
     const message = {
       to: email,
       from: "karanthakur577@gmail.com",
@@ -41,9 +35,7 @@ exports.forgetPassword = async (req, res, next) => {
       text: "Click on below link to reset password",
       html: `<a href="http://localhost:8000/password/resetpassword/${id}">Reset password</a>`,
     };
-    console.log("message send is >>>>>>" , message)
     const result = await sgMail.send(message);
-    console.log("result is >>>>>>" , result)
 
     console.log("id >>>>>>>>",id)
 
@@ -58,7 +50,6 @@ exports.forgetPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   try{
     const forgetPasswordId =  req.params.id;
-    console.log("forgetPasswordId>>>>>>>>>>>>>>>",forgetPasswordId)
     const forgotPasswordRequest = await ForgetPassword.findOne({_id:forgetPasswordId})
     console.log("forgotPasswordRequest >>>>>" , forgotPasswordRequest)
     if(forgotPasswordRequest)
