@@ -15,7 +15,4 @@ router.get('/user/download',userAuthentication.authenticate,expenseController.do
 
 router.get('/user/getURL',userAuthentication.authenticate,expenseController.downloadAllUrl)
 
-//completed till here
-
-
 module.exports = router

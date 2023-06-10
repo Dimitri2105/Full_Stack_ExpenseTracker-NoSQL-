@@ -9,6 +9,4 @@ router.get('/buyPremiumMembership',userAuthentication.authenticate,purchaseContr
 
 router.post('/updateTransactionStatus',userAuthentication.authenticate,purchaseController.updateStatus)
 
-//completed till here
-
 module.exports = router
